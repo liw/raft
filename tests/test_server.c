@@ -153,7 +153,7 @@ void TestRaft_server_can_run_with_empty_configuration(CuTest * tc)
     msg_appendentries_response_t aer;
     ae.term = 1;
     ae.prev_log_idx = 0;
-    ae.prev_log_term = 1;
+    ae.prev_log_term = 0;
 
     ae.entries = e;
     ae.n_entries = 2;
@@ -1458,7 +1458,7 @@ void TestRaft_follower_recv_appendentries_increases_log(CuTest * tc)
     /* receive an appendentry with commit */
     memset(&ae, 0, sizeof(msg_appendentries_t));
     ae.term = 3;
-    ae.prev_log_term = 1;
+    ae.prev_log_term = 0;
     /* first appendentries msg */
     ae.prev_log_idx = 0;
     ae.leader_commit = 5;
@@ -1726,7 +1726,7 @@ void TestRaft_follower_recv_appendentries_add_new_entries_not_already_in_log(
     memset(&ae, 0, sizeof(msg_appendentries_t));
     ae.term = 1;
     ae.prev_log_idx = 0;
-    ae.prev_log_term = 1;
+    ae.prev_log_term = 0;
     /* include entries */
     msg_entry_t e[2];
     memset(&e, 0, sizeof(msg_entry_t) * 2);
@@ -1760,7 +1760,7 @@ void TestRaft_follower_recv_appendentries_does_not_add_dupe_entries_already_in_l
     memset(&ae, 0, sizeof(msg_appendentries_t));
     ae.term = 1;
     ae.prev_log_idx = 0;
-    ae.prev_log_term = 1;
+    ae.prev_log_term = 0;
     /* include 1 entry */
     msg_entry_t e[2];
     memset(&e, 0, sizeof(msg_entry_t) * 2);
@@ -1934,7 +1934,7 @@ void TestRaft_follower_recv_appendentries_set_commitidx_to_prevLogIdx(
     memset(&ae, 0, sizeof(msg_appendentries_t));
     ae.term = 1;
     ae.prev_log_idx = 0;
-    ae.prev_log_term = 1;
+    ae.prev_log_term = 0;
     /* include entries */
     msg_entry_t e[4];
     memset(&e, 0, sizeof(msg_entry_t) * 4);
@@ -1983,7 +1983,7 @@ void TestRaft_follower_recv_appendentries_set_commitidx_to_LeaderCommit(
     memset(&ae, 0, sizeof(msg_appendentries_t));
     ae.term = 1;
     ae.prev_log_idx = 0;
-    ae.prev_log_term = 1;
+    ae.prev_log_term = 0;
     /* include entries */
     msg_entry_t e[4];
     memset(&e, 0, sizeof(msg_entry_t) * 4);
@@ -2205,7 +2205,7 @@ void TestRaft_follower_recv_appendentries_heartbeat_does_not_overwrite_logs(
     memset(&ae, 0, sizeof(msg_appendentries_t));
     ae.term = 1;
     ae.prev_log_idx = 0;
-    ae.prev_log_term = 1;
+    ae.prev_log_term = 0;
     /* include entries */
     msg_entry_t e[4];
     memset(&e, 0, sizeof(msg_entry_t) * 4);
@@ -2269,7 +2269,7 @@ void TestRaft_follower_recv_appendentries_does_not_deleted_commited_entries(
     memset(&ae, 0, sizeof(msg_appendentries_t));
     ae.term = 1;
     ae.prev_log_idx = 0;
-    ae.prev_log_term = 1;
+    ae.prev_log_term = 0;
     /* include entries */
     msg_entry_t e[5];
     memset(&e, 0, sizeof(msg_entry_t) * 4);
