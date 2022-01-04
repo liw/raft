@@ -848,6 +848,7 @@ int raft_recv_entry(raft_server_t* me_,
                     msg_entry_response_t *r)
 {
     raft_server_private_t* me = (raft_server_private_t*)me_;
+    raft_node_t* node = raft_get_my_node(me_);
     int i;
 
     if (raft_entry_is_voting_cfg_change(ety))
@@ -869,19 +870,22 @@ int raft_recv_entry(raft_server_t* me_,
           me->current_term, ety->id, raft_get_current_idx(me_) + 1);
 
     ety->term = me->current_term;
-    int k = 1;
-    int e = raft_append_entries(me_, ety, &k);
-    if (0 != e)
-        return e;
-    assert(k == 1);
+
+    if (node && raft_node_is_active(node))
+    {
+        int k = 1;
+        int e = raft_append_entries(me_, ety, &k);
+        if (0 != e)
+            return e;
+        assert(k == 1);
+    }
 
     for (i = 0; i < me->num_nodes; i++)
     {
-        raft_node_t* node = me->nodes[i];
+        node = me->nodes[i];
 
         if (!node || raft_is_self(me_, node) ||
-            !raft_node_is_active(node) ||
-            !raft_node_is_voting(node))
+            !raft_node_is_active(node))
             continue;
 
         /* Only send new entries.
