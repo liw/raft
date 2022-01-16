@@ -565,11 +565,6 @@ out:
 
 static int __should_grant_vote(raft_server_private_t* me, msg_requestvote_t* vr)
 {
-    raft_node_t *my_node = raft_get_my_node((void*)me);
-
-    if (my_node && !raft_node_is_voting(my_node))
-        return 0;
-
     /* For a prevote, we could theoretically proceed to the votedFor check
      * below, if vr->term == currentTerm - 1. That, however, would only matter
      * if we had rejected a previous RequestVote from a third server, who must
