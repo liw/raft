@@ -55,7 +55,8 @@ void TestRaft_scenario_leader_appears(CuTest * tc)
                                  .send_appendentries = sender_appendentries,
                                  .persist_term = __raft_persist_term,
                                  .persist_vote = __raft_persist_vote,
-                                 .log = NULL
+                                 .log = NULL,
+                                 .time = __raft_time
                              }), sender[j]);
     }
 
