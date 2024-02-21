@@ -634,7 +634,9 @@ int raft_recv_appendentries(
             if (ae->prev_log_idx <= raft_get_commit_idx(me_))
             {
                 /* Should never happen; something is seriously wrong! */
-                log_error(me_, node, "AE prev conflicts with committed entry");
+                log_error(me_, node, "AE prev conflicts with committed entry ci:%ld comi:%ld lcomi:%ld pli:%ld",
+                          raft_get_current_idx(me_), raft_get_commit_idx(me_),
+                          ae->leader_commit, ae->prev_log_idx);
                 e = RAFT_ERR_SHUTDOWN;
                 goto out;
             }
@@ -770,8 +772,8 @@ int raft_recv_requestvote(raft_server_t* me_,
     {
         e = raft_set_current_term(me_, vr->term);
         if (0 != e) {
-            log_info(me_, node, "rejected requestvote%s for %d: could not update term: %d",
-                     vr->prevote ? " (prevote)" : "", vr->candidate_id, e);
+            log_error(me_, node, "rejected requestvote%s for %d: could not update term: %d",
+                      vr->prevote ? " (prevote)" : "", vr->candidate_id, e);
             r->vote_granted = 0;
             goto done;
         }
@@ -792,8 +794,8 @@ int raft_recv_requestvote(raft_server_t* me_,
             e = raft_vote_for_nodeid(me_, vr->candidate_id);
             if (0 != e)
             {
-                log_info(me_, node, "rejected requestvote%s for %d: could not update vote: %d",
-                         vr->prevote ? " (prevote)" : "", vr->candidate_id, e);
+                log_error(me_, node, "rejected requestvote%s for %d: could not update vote: %d",
+                          vr->prevote ? " (prevote)" : "", vr->candidate_id, e);
                 r->vote_granted = 0;
             }
 

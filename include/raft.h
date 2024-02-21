@@ -570,8 +570,8 @@ typedef struct
 } raft_node_configuration_t;
 
 /** Set the global logging level.
- * Messages at levels lower than this level will not be logged. Default to
- * RAFT_LOG_INFO. */
+ * Only those messages at levels less than or equal to this level will be
+ * logged. Default to RAFT_LOG_INFO. */
 void raft_set_log_level(raft_loglevel_e level);
 
 /** Initialise a new Raft server.
