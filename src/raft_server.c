@@ -188,7 +188,7 @@ void raft_become_leader(raft_server_t* me_)
 
     log_info(me_, NULL, "becoming leader term:%ld", raft_get_current_term(me_));
 
-    raft_set_state(me_, RAFT_STATE_LEADER);
+    //raft_set_state(me_, RAFT_STATE_LEADER);
     raft_time_t now = me->cb.get_time(me_, me->udata);
     me->election_timer = now;
     for (i = 0; i < me->num_nodes; i++)
